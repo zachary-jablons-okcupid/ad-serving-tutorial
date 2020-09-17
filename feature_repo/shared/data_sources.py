@@ -74,6 +74,7 @@ ad_impressions_kinesis = KinesisDSConfig(
     default_watermark_delay_threshold="1minutes",
     default_initial_stream_position="trim_horizon",
     deduplication_columns=[],
+    options={'roleArn': 'arn:aws:iam::472542229217:role/demo-cross-account-kinesis-ro'}
 )
 
 ad_impressions_stream = VirtualDataSource(name="ad_impressions_stream", batch_ds_config=ad_impressions_hive, stream_ds_config=ad_impressions_kinesis)
