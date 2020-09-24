@@ -1,4 +1,4 @@
-from tecton import pyspark_transformation, TemporalFeaturePackage, DataSourceConfig, MaterializationConfig
+from tecton import pyspark_transformation, TemporalFeaturePackage, MaterializationConfig
 from feature_repo.shared import entities as e, data_sources
 from datetime import datetime
 
@@ -16,8 +16,6 @@ user_partner_impression_count_7_days = TemporalFeaturePackage(
     description="[Pyspark Feature] The number of ads a user has been shown on a given partner site over the past 7 days",
     transformation=user_partner_impression_count_7_days_transformer,
     entities=[e.user_entity, e.partner_entity],
-    timestamp_key="timestamp",
-    data_source_configs=[data_sources.ad_impressions_batch_config],
     materialization=MaterializationConfig(
         offline_enabled=True,
         online_enabled=True,
@@ -25,5 +23,8 @@ user_partner_impression_count_7_days = TemporalFeaturePackage(
         serving_ttl="1d",
         schedule_interval="1d",
         data_lookback_period="7d"
-    )
+    ),
+    family='ad_serving',
+    tags={'release': 'production'},
+    owner="jaye@tecton.ai"
 )

@@ -1,4 +1,4 @@
-from tecton import TemporalFeaturePackage, DataSourceConfig, pyspark_transformation, MaterializationConfig
+from tecton import TemporalFeaturePackage, pyspark_transformation, MaterializationConfig
 from feature_repo.shared import data_sources, entities
 from datetime import datetime
 
@@ -13,8 +13,6 @@ from datetime import datetime
 #     description="[Pyspark Feature] The total number of impressions that an ad has generated over the past month",
 #     transformation=ad_impression_count_monthly_transformer,
 #     entities=[entities.ad_entity],
-#     timestamp_key="timestamp",
-#     data_source_configs=[data_sources.ad_impressions_batch_config],
 #     materialization=MaterializationConfig(
 #         online_enabled=False,
 #         offline_enabled=False,
@@ -22,4 +20,6 @@ from datetime import datetime
 #         schedule_interval='1day',
 #         serving_ttl='1day'
 #     )
+#     family='ad_serving',
+#     tags={'release': 'development'}
 # )

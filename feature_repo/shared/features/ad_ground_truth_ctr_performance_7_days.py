@@ -1,4 +1,4 @@
-from tecton import sql_transformation, TemporalFeaturePackage, DataSourceConfig, MaterializationConfig
+from tecton import sql_transformation, TemporalFeaturePackage, MaterializationConfig
 from feature_repo.shared import entities as e, data_sources
 from datetime import datetime
 
@@ -19,11 +19,9 @@ def ad_ground_truth_ctr_performance_7_days_transformer(context, ad_impressions_b
 
 ad_ground_truth_ctr_performance_7_days = TemporalFeaturePackage(
     name="ad_ground_truth_ctr_performance_7_days",
-    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 7 days",
+    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the last 7 days",
     transformation=ad_ground_truth_ctr_performance_7_days_transformer,
     entities=[e.ad_entity],
-    data_source_configs=[data_sources.ad_impressions_batch_config],
-    timestamp_key='timestamp',
     materialization=MaterializationConfig(
         online_enabled=True,
         offline_enabled=True,
@@ -32,4 +30,7 @@ ad_ground_truth_ctr_performance_7_days = TemporalFeaturePackage(
         serving_ttl='1day',
         data_lookback_period='7days'
     ),
+    family='ad_serving',
+    tags={'release': 'production'},
+    owner="matt@tecton.ai",
 )

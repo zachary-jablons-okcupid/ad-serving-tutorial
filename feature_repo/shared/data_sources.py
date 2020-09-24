@@ -2,15 +2,14 @@ from tecton import (
     VirtualDataSource,
     FileDSConfig,
     HiveDSConfig,
-    KinesisDSConfig,
-    DataSourceConfig
+    KinesisDSConfig
 )
 
 from tecton_spark.function_serialization import inlined
 
 @inlined
 def ad_stream_translator(df):
-    from pyspark.sql.types import StructType, StringType, IntegerType, LongType, BooleanType
+    from pyspark.sql.types import StructType, StringType
     from pyspark.sql.functions import from_json, col, from_utc_timestamp, when
 
     payload_schema = (
@@ -52,7 +51,7 @@ def ad_stream_translator(df):
           when(
             col("payload.is_pwa") == "True",
             True).when(
-            col("payload.is_pwa") == "False",        
+            col("payload.is_pwa") == "False",
             False).alias("is_pwa"),          
           col("payload.user_uuid").alias("user_uuid"),
           from_utc_timestamp("payload.timestamp", "UTC").alias("timestamp")
@@ -67,18 +66,30 @@ ad_impressions_hive = HiveDSConfig(
 )
 
 ad_impressions_kinesis = KinesisDSConfig(
-    stream_name='ad-impressions-2', 
+    stream_name='ad-impressions-2',
     region='us-west-2',
     raw_stream_translator=ad_stream_translator,
     timestamp_key='timestamp',
     default_watermark_delay_threshold="1minutes",
     default_initial_stream_position="trim_horizon",
     deduplication_columns=[],
-    options={'roleArn': 'arn:aws:iam::472542229217:role/demo-cross-account-kinesis-ro'}
 )
 
-ad_impressions_stream = VirtualDataSource(name="ad_impressions_stream", batch_ds_config=ad_impressions_hive, stream_ds_config=ad_impressions_kinesis)
-ad_impressions_batch = VirtualDataSource(name="ad_impressions_batch", batch_ds_config=ad_impressions_hive)
-
-ad_impressions_batch_config = DataSourceConfig(virtual_data_source=ad_impressions_batch)
-ad_impressions_stream_config = DataSourceConfig(virtual_data_source=ad_impressions_stream)
+ad_impressions_stream = VirtualDataSource(name="ad_impressions_stream", 
+    batch_ds_config=ad_impressions_hive, 
+    stream_ds_config=ad_impressions_kinesis,
+    family='ad_serving',
+    tags={
+        'release': 'production',
+        'source': 'mobile'
+    }
+)
+ad_impressions_batch = VirtualDataSource(
+    name="ad_impressions_batch", 
+    batch_ds_config=ad_impressions_hive,
+    family='ad_serving',
+    tags={
+        'release': 'production',
+        'source': 'mobile'
+    }
+)
