@@ -95,7 +95,17 @@ ad_impressions_batch = VirtualDataSource(
     }
 )
 
-sample_events_data = FileDSConfig(
+sample_events_config = FileDSConfig(
         uri='s3://ad-impressions-data/sample_events.pq',
         file_format="parquet"
 )
+
+website_traffic_stats_vds = VirtualDataSource(
+        name='sample_events_for_model',
+        batch_ds_config=sample_events_config,
+        family='ad_serving',
+        tags={
+            'release': 'production'
+        }
+)
+
