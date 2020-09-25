@@ -96,7 +96,7 @@ ad_impressions_batch = VirtualDataSource(
 )
 
 sample_events_config = FileDSConfig(
-        uri='s3://ad-impressions-data/sample_events.pq',
+        uri='s3://ad-impressions-data/ctr_events.pq',
         file_format="parquet"
 )
 
