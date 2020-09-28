@@ -31,3 +31,22 @@ user_ad_impression_counts = TemporalAggregateFeaturePackage(
     tags={'release': 'development'},
     owner="jay@tecton.ai"
 )
+
+'''
+user_ad_impression_counts_v2 = TemporalAggregateFeaturePackage(
+    name="user_ad_impression_counts:daily",
+    description="[Stream Feature] The number of times a given user has been shown a given ad over various time windows",
+    entities=[entities.user_entity, entities.ad_entity],
+    transformation=user_ad_impression_counts_transformer,
+    aggregation_slide_period="6h",
+    aggregations=[FeatureAggregation(column="impression", function="count", time_windows=["24h", "48h", "72h"])],
+    materialization=MaterializationConfig(
+        online_enabled=True,
+        offline_enabled=True,
+        feature_start_time=datetime(2020, 6, 1),
+    ),
+    family='ad_serving',
+    tags={'release': 'development'},
+    owner="brad@tecton.ai"
+)
+'''
