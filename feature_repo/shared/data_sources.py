@@ -59,7 +59,7 @@ def ad_stream_translator(df):
     )
 
 ad_impressions_hive = HiveDSConfig(
-    database='ad_impressions_2',
+    database='demo_ad_impressions',
     table='batch_events',
     timestamp_column_name='timestamp',
     date_partition_column='datestr'
