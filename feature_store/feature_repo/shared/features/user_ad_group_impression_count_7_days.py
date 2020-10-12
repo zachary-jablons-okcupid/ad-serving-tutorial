@@ -4,18 +4,18 @@ from datetime import datetime
 
 
 @pyspark_transformation(inputs=data_sources.ad_impressions_batch, has_context=True)
-def user_partner_impression_count_7_days_transformer(context, input_df):
+def user_ad_group_impression_count_7_days_transformer(context, input_df):
     import pyspark.sql.functions as F
 
-    user_website_views = input_df.groupBy("user_uuid", "partner_id").agg(F.count(F.col("*")).alias("user_partner_impressions_7_days"))
+    user_website_views = input_df.groupBy("user_uuid", "ad_group_id").agg(F.count(F.col("*")).alias("user_ad_group_impressions_7_days"))
     user_website_views = user_website_views.withColumn("timestamp", F.to_timestamp(F.lit(context.feature_data_end_time)))
     return user_website_views
 
-user_partner_impression_count_7_days = TemporalFeaturePackage(
-    name="user_partner_impression_count_7_days",
-    description="[Pyspark Feature] The number of ads a user has been shown on a given partner site over the past 7 days",
-    transformation=user_partner_impression_count_7_days_transformer,
-    entities=[e.user_entity, e.partner_entity],
+user_ad_group_impression_count_7_days = TemporalFeaturePackage(
+    name="user_ad_group_impression_count_7_days",
+    description="[Pyspark Feature] The number of ads a user has been shown from a given ad group site over the past 7 days",
+    transformation=user_ad_group_impression_count_7_days_transformer,
+    entities=[e.user_entity, e.ad_group_entity],
     materialization=MaterializationConfig(
         offline_enabled=True,
         online_enabled=True,
