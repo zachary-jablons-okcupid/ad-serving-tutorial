@@ -108,4 +108,3 @@ events_vds = VirtualDataSource(
             'release': 'production'
         }
 )
-
