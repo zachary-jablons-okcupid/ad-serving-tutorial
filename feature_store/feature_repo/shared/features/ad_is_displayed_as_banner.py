@@ -6,7 +6,6 @@ request_context = RequestContext(schema={
     "ad_display_placement": StringType(),
 })
 
-
 output_schema = StructType()
 output_schema.add(StructField("ad_is_displayed_as_banner", LongType()))
 
