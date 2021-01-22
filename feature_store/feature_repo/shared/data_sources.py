@@ -54,7 +54,8 @@ def ad_stream_translator(df):
             col("payload.is_pwa") == "False",
             False).alias("is_pwa"),          
           col("payload.user_uuid").alias("user_uuid"),
-          from_utc_timestamp("payload.timestamp", "UTC").alias("timestamp")
+          from_utc_timestamp("payload.timestamp", "UTC").alias("timestamp"),
+          col("payload.datestr").alias("datestr")
       )
     )
 
