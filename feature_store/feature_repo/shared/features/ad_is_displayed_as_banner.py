@@ -10,11 +10,11 @@ output_schema = StructType()
 output_schema.add(StructField("ad_is_displayed_as_banner", LongType()))
 
 @online_transformation(request_context=request_context, output_schema=output_schema)
-def ad_is_displayed_as_banner_transformer(ad_display_types: pandas.Series):
+def ad_is_displayed_as_banner_transformer(ad_display_placement: pandas.Series):
     import pandas as pd
 
     series = []
-    for ad_display_type in ad_display_types:
+    for ad_display_type in ad_display_placement:
         series.append({
             "ad_is_displayed_as_banner": 1 if ad_display_type == "Banner" else 0,
         })
