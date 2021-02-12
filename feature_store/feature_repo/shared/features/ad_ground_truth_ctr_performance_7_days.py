@@ -3,8 +3,8 @@ from feature_repo.shared import entities as e, data_sources
 from datetime import datetime
 
 
-@sql_transformation(inputs=data_sources.ad_impressions_batch, has_context=True)
-def ad_ground_truth_ctr_performance_7_days_transformer(context, ad_impressions_batch):
+@sql_transformation(inputs=data_sources.events_vds, has_context=True)
+def ad_ground_truth_ctr_performance_7_days_transformer(context, sample_events_for_model):
     return f"""
     SELECT
         ad_id,
@@ -12,7 +12,7 @@ def ad_ground_truth_ctr_performance_7_days_transformer(context, ad_impressions_b
         count(*) as ad_total_impressions_7days,
         to_timestamp('{context.feature_data_end_time}') as timestamp
     FROM
-        {ad_impressions_batch}
+        {sample_events_for_model}
     GROUP BY
         ad_id
     """
