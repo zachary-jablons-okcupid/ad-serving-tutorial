@@ -36,7 +36,7 @@ partner_ctr_performance_7d = TemporalFeaturePackage(
 
 partner_ctr_performance_14d = TemporalFeaturePackage(
     name="partner_ctr_performance:14d",
-    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 7 days",
+    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 14 days",
     transformation=partner_ctr_performance_transformer,
     entities=[e.partner_entity],
     materialization=MaterializationConfig(
@@ -54,7 +54,7 @@ partner_ctr_performance_14d = TemporalFeaturePackage(
 
 partner_ctr_performance_30d = TemporalFeaturePackage(
     name="partner_ctr_performance:30d",
-    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 7 days",
+    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 30 days",
     transformation=partner_ctr_performance_transformer,
     entities=[e.partner_entity],
     materialization=MaterializationConfig(
@@ -70,10 +70,9 @@ partner_ctr_performance_30d = TemporalFeaturePackage(
     owner="ravi@tecton.ai",
 )
 
-'''
 partner_ctr_performance_60d = TemporalFeaturePackage(
     name="partner_ctr_performance:60d",
-    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 7 days",
+    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 60 days",
     transformation=partner_ctr_performance_transformer,
     entities=[e.partner_entity],
     materialization=MaterializationConfig(
@@ -86,6 +85,23 @@ partner_ctr_performance_60d = TemporalFeaturePackage(
     ),
     family='ad_serving',
     tags={'release': 'development', ':production': 'true'},
-    owner="ravi@tecton.ai",
+    owner="zach@okcupid.com",
 )
-'''
+
+partner_ctr_performance_90d = TemporalFeaturePackage(
+    name="partner_ctr_performance:90d",
+    description="[SQL Feature] The aggregate CTR of a partner website (clicks / total impressions) over the past 90 days",
+    transformation=partner_ctr_performance_transformer,
+    entities=[e.partner_entity],
+    materialization=MaterializationConfig(
+        offline_enabled=True,
+        online_enabled=False,
+        feature_start_time=datetime(year=2020, month=6, day=20),
+        serving_ttl="1d",
+        schedule_interval="1d",
+        data_lookback_period="90d"
+    ),
+    family='ad_serving',
+    tags={'release': 'development', ':production': 'true'},
+    owner="zach@okcupid.com",
+)
