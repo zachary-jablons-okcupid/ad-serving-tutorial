@@ -85,7 +85,7 @@ partner_ctr_performance_60d = TemporalFeaturePackage(
     ),
     family='ad_serving',
     tags={'release': 'development', ':production': 'true'},
-    owner="ravi@tecton.ai",
+    owner="zach@okcupid.com",
 )
 
 partner_ctr_performance_90d = TemporalFeaturePackage(
@@ -103,5 +103,5 @@ partner_ctr_performance_90d = TemporalFeaturePackage(
     ),
     family='ad_serving',
     tags={'release': 'development', ':production': 'true'},
-    owner="ravi@tecton.ai",
+    owner="zach@okcupid.com",
 )
