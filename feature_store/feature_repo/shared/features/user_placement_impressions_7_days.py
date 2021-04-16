@@ -2,13 +2,27 @@ from tecton import pyspark_transformation, TemporalFeaturePackage, Materializati
 from feature_repo.shared import entities as e, data_sources
 from datetime import datetime
 
-
 @pyspark_transformation(inputs=data_sources.ad_impressions_batch, has_context=True)
 def user_placement_impression_count_7_days_transformer(context, input_df):
+    # future reference: can't use globals as this is code that will run in its own PySpark thing?
     import pyspark.sql.functions as F
-
-    user_placement_views = input_df.groupBy("user_uuid", "ad_display_placement").agg(F.count(F.col("*")).alias("user_placement_impressions_7_days"))
-    user_placement_views = user_placement_views.withColumn("timestamp", F.to_timestamp(F.lit(context.feature_data_end_time)))
+    user_placement_views = (
+        input_df
+        .groupBy("user_uuid", "ad_display_placement")
+        .agg(
+            F.count(F.col("*"))
+            .alias("user_placement_impressions_7_days")
+        )
+    )
+    user_placement_views = (
+        user_placement_views
+        .withColumn(
+            "timestamp",
+            F.to_timestamp(
+                F.lit(context.feature_data_end_time)
+            )
+        )
+    )
     return user_placement_views
 
 user_placement_impression_count_7_days = TemporalFeaturePackage(

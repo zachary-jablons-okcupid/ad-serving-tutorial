@@ -12,7 +12,6 @@ ctr_prediction_service = FeatureService(
     features=[
         ad_ground_truth_ctr_performance_7_days,
         user_total_ad_frequency_counts,
-        user_ad_impression_counts
     ],
     family='ad_serving',
     tags={'release': 'production'},
